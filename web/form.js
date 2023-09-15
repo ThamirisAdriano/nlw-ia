@@ -1,17 +1,29 @@
+import { server } from "./server.js"
+
 const form = document.querySelector("#form")
 const input = document.querySelector("#url")
 const content = document.querySelector("#content")
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault()
 
   const videoURL = input.value
 
-  if (!videoURL.includes("shorts")) { 
-      return (content.textContent = "Esse vídeo parece não ser um short.")
+  if (!videoURL.includes("shorts")) {
+    return (content.textContent = "Esse vídeo parece não ser um short.")
   }
 
-  const [_, params] = videoURL.split("/shorts/") // aqui usamoso split para dividir a url em antes e depois da string shorts
-  const [videoId] = params.split("?si") // aqui usamos o split para tirar tudo que vier depois do id
-  console.log(videoId)
+  const [_, params] = videoURL.split("/shorts/")
+
+  const [videoId] = params.split("?si")
+
+  content.textContent = "Obtendo o texto do áudio..."
+  const transcription = await server.get("/summary/" + videoId)
+
+  content.textContent = "Realizando o resumo..."
+  const summary = await server.post("/summary", {
+    text: transcription.data.result,
+  })
+
+  content.textContent = summary.data.result
 })
