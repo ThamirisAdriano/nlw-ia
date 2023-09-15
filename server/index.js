@@ -17,7 +17,7 @@ app.get("/summary/:id", async (request, response) => {
   return response.json({ result })
 })
 
-app.post("./summary", async (request, response) => {
+app.post("/summary", async (request, response) => {
   const result = await summarize(request.body.text)
   return response.json({ result })
 })
