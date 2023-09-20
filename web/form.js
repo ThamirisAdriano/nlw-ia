@@ -8,7 +8,6 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault()
   content.classList.add("placeholder")
 
-
   const videoURL = input.value
 
   if (!videoURL.includes("shorts")) {
@@ -27,6 +26,6 @@ form.addEventListener("submit", async (event) => {
     text: transcription.data.result,
   })
 
-  content.textContent = summary.data.result
+  content.textContent = summary.data.result //atualização do resultado após tratamento no index
   content.classList.remove("placeholder")
 })
